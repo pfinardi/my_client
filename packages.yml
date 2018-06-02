@@ -1,0 +1,8 @@
+- name: Install htop
+  apt: name=htop
+
+- name: Install packages
+  apt: name={{item}}
+  with_items:
+    - tmux
+    - gnome-tweak-tool

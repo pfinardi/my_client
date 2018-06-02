@@ -1,14 +1,9 @@
 - hosts: localhost
   become: true
+  pre_tasks:
+    - name: update repositories
+      apt: update_cache=yes cache_valid_time=3600
+      changed_when: False
+
   tasks:
-  - name: apt-get update, if necessary
-    apt: update_cache=yes cache_valid_time=3600
-
-  - name: Install htop
-    apt: name=htop
-
-  - name: Install packages
-    apt: name={{item}}
-    with_items:
-      - tmux
-      - gnome-tweak-tool
+    - include: tasks/packages.yml
