@@ -1,4 +1,4 @@
-# my_client
+# My Client
 
 Base Settings to configure my Linux client
 
