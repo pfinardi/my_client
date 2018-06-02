@@ -1,0 +1,14 @@
+- hosts: localhost
+  become: true
+  tasks:
+  - name: apt-get update, if necessary
+    apt: update_cache=yes cache_valid_time=3600
+
+  - name: Install htop
+    apt: name=htop
+
+  - name: Install packages
+    apt: name={{item}}
+    with_items:
+      - tmux
+      - gnome-tweak-tool
