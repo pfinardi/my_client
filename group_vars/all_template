@@ -1,0 +1,4 @@
+nas_user: paperino
+nas_password: nontelodico
+nas_ip: xxx.xxx.xxx.xxx
+nas_ssh_port: 22

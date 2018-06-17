@@ -22,6 +22,7 @@
 - name: Install packages
   apt: name={{item}}
   with_items:
+    - cryptsetup
     - tmux
     - gnome-tweak-tool
     - torbrowser-launcher

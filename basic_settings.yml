@@ -1,0 +1,26 @@
+# ansible-playbook -s basic_settings.yml --extra-vars $'"nas_user=gino nas_password=pino nas_ip=192.168.0.1 nas_ssh_port=22"'
+
+#---------------------------------------------------------------------------
+# All hosts
+
+- hosts: localhost
+  vars:
+  - nas_user: me
+  - nas_password: my_password
+  - nas_ip: xxx.xxx.xxx.xxx
+  - nas_ssh_port: 22
+
+  tasks:
+  
+  #-------------------------------------------
+  # Copy SSH public key of any host on backup server
+  - name: install sshpass (important to copy ssh id without prompt password)
+    apt: name=sshpass state=latest
+  - name: Copy SSH key on backup server
+    become_user: paolo
+    shell: sshpass -p {{nas_password}} scp -P {{nas_ssh_port}} {{nas_user}}@{{nas_ip}}:/volume1/NetBackup/HP_1604/paolo/.ssh/ /home/paolo/my_client/m/
+    #shell: sshpass -p {{nas_password}} rsync -avz --dry-run --stats {{nas_user}}@{{nas_ip}}:/volume1/NetBackup/HP_1604/paolo/.ssh/ /home/paolo/my_client/m/
+    #shell: sshpass -p {{ labext_pwd }} ssh-copy-id -i $HOME/.ssh/id_rsa.pub labext@{{ ip_server }}
+    #when: ansible_eth0.ipv4.address != "{{ ip_server }}" and ansible_eth1.ipv4.address != "{{ ip_server }}"
+    #when: ansible_eth0.ipv4.address != "{{ ip_server }}"
+
