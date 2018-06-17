@@ -22,4 +22,11 @@ Clone repo:
 git clone git@github.com:pfinardi/my_client.git
 ```
 
+### Variables
 
+Copy template for "all" variables:
+```
+cp group_vars/all_template group_vars/all
+```
+
+then set all variables in **group_vars/all**

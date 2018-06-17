@@ -11,5 +11,6 @@
       changed_when: False
 
   tasks:
-    - include: packages.yml
-    - include: cron.yml
+    - include: tasks/basic_settings.yml
+    - include: tasks/packages.yml
+    - include: tasks/cron.yml

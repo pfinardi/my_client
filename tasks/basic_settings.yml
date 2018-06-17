@@ -1,0 +1,9 @@
+#-------------------------------------------
+# Copy SSH public key of any host on backup server
+- name: install sshpass (important to copy ssh id without prompt password)
+  apt: name=sshpass state=latest
+- name: Copy SSH key on backup server
+  become_user: {{ main_user }}
+#  become_user: paolo
+  shell: sshpass -p {{nas_password}} scp -P {{nas_ssh_port}} {{nas_user}}@{{nas_ip}}:/volume1/NetBackup/HP_1604/paolo/.ssh/* /home/{{main_user}}/.ssh
+

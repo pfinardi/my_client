@@ -16,11 +16,13 @@
     repo: ppa:nextcloud-devs/client
     filename: nextcloud
 
+#------------------------------------
+# Install packages from repo
 - name: Install htop
-  apt: name=htop
+  apt: name=htop state=latest
 
 - name: Install packages
-  apt: name={{item}}
+  apt: name={{item}} state=latest
   with_items:
     - cryptsetup
     - tmux
