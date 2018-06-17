@@ -1,3 +1,5 @@
+#--------------------------------------------
+# enabling or adding the needed repositories
 - name: enable partner repo
   apt_repository:
     repo: deb http://archive.canonical.com/ubuntu bionic partner
@@ -8,6 +10,11 @@
   apt_repository:
     repo: ppa:numix/ppa
     filename: numix
+
+- name: add repo for nextcloud-client
+  apt_repository:
+    repo: ppa:nextcloud-devs/client
+    filename: nextcloud
 
 - name: Install htop
   apt: name=htop
@@ -20,3 +27,6 @@
     - torbrowser-launcher
     - numix-gtk-theme
     - numix-icon-theme-circle
+    - nautilus-dropbox
+    - nextcloud-client
+    - nextcloud-client-nautilus

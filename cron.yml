@@ -1,0 +1,39 @@
+- name: Cron - delete temporary files
+  cron: 
+    name="Delete temporary files - {{item}}"
+    user="paolo"
+    minute="10"
+    hour="13"
+    job="find /home/paolo/{{item}}/ -type f -name '*~' -delete > /dev/null"
+  with_items:
+    - Desktop
+    - Documents
+    - Downloads
+    - MEGA
+    - Dropbox
+    - Cloud_Sefi
+
+- name: backup CRONTAB definitions
+  cron:
+    name="Backup CRONTAB definitions"
+    user="paolo"
+    minute="15"
+    hour="*/3"
+    job="crontab -l > /home/paolo/Cloud_Sefi/Backup/Settings/hpubu_crontab.txt"
+
+- name: backup ANACRONTAB definitions
+  cron:
+    name="Backup ANACRONTAB definitions"
+    user="paolo"
+    minute="15"
+    hour="*/3"
+    job="cat /etc/anacrontab > /home/paolo/Dropbox/Backup/Settings/hpubu_anacrontab.txt"
+
+- name: list installed packages
+  cron:
+    name="List installed packages"
+    user="paolo"
+    minute="45"
+    hour="*/3"
+    job="dpkg --get-selections > ./Dropbox/Backup/Settings/paonote_applicazioni.txt"
+

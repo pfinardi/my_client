@@ -1,3 +1,6 @@
+########################################################
+## ansible-playbook -s local.yml
+########################################################
 - hosts: localhost
 #- hosts: all
   become: true
@@ -9,3 +12,4 @@
 
   tasks:
     - include: packages.yml
+    - include: cron.yml
