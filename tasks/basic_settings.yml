@@ -1,9 +1,48 @@
 #-------------------------------------------
-# Copy SSH public key of any host on backup server
+# Get SSH Keys from NAS
 - name: install sshpass (important to copy ssh id without prompt password)
   apt: name=sshpass state=latest
-- name: Copy SSH key on backup server
-  become_user: {{ main_user }}
-#  become_user: paolo
-  shell: sshpass -p {{nas_password}} scp -P {{nas_ssh_port}} {{nas_user}}@{{nas_ip}}:/volume1/NetBackup/HP_1604/paolo/.ssh/* /home/{{main_user}}/.ssh
 
+- name: Check if directory .ssh exists
+  become_user: "{{ main_user }}"
+#  shell: test -d $HOME/.ssh
+#  register: check_sshdir
+#  ignore_errors: true
+  stat: path=/home/{{main_user}}/.ssh
+  register: check_sshdir
+  
+- name: Create directory .ssh
+  become_user: "{{ main_user }}"
+#  shell: mkdir -p /home/{{main_user}}/.ssh
+  file: path=/home/{{main_user}}/.ssh
+    state=directory
+    mode=0700
+  when: check_sshdir.stat.exists == False or check_sshdir.stat.isdir == False
+#  when: check_sshdir is failed
+
+#- name: tell the host about our servers it might want to ssh to
+#  known_hosts:
+#    path: /home/paolo/.ssh/known_hosts
+#    name: 192.168.63.200
+#    key: "{{ lookup('file', 'pubkeys/192.168.63.200') }}"
+#    key: "|1|ls9tBT2jCjV+eoBJycfm8un6IHA=|/Kuomy9W3tGDke3Mzrr6IPa3NMY= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBPA8LJGM+YnWh1vnOdok6RWbI3Wrpxw+S9yg1yO/HZXKVd8dw8Dy1+NrXrT0EqysHOxM/SsDE/TuM3jIXZuDg/c="
+#    state: present
+
+#- name: test ssh connection
+#  become_user: "{{ main_user }}"
+#  shell: ssh -p 7022 admin@192.168.63.200
+#  ignore_errors: true
+  
+- name: Check if SSH key exists
+  become_user: "{{ main_user }}"
+#  shell: test -f $HOME/.ssh/id_rsa
+#  changed_when: false
+#  ignore_errors: true
+  stat: path=/home/{{main_user}}/.ssh/id_rsa
+  register: check_key
+  
+- name: Copy SSH key on backup server
+  become_user: "{{ main_user }}"
+  shell: sshpass -p {{nas_password}} scp -P {{nas_ssh_port}} {{nas_user}}@{{nas_ip}}:/volume1/NetBackup/HP_1604/paolo/.ssh/* /home/{{main_user}}/.ssh
+#  when: check_key|failed
+  when: check_key.stat.exists == False
