@@ -3,3 +3,7 @@ nas_user: paperino
 nas_password: nontelodico
 nas_ip: xxx.xxx.xxx.xxx
 nas_ssh_port: 22
+
+# path of ssh keys' backup on the NAS
+nas_path_backup_ssh: /my_path/.ssh/
+
