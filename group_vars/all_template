@@ -1,4 +1,7 @@
+# Main user (must be a sudoers)
 main_user: sonoio
+
+# NAS informations
 nas_user: paperino
 nas_password: nontelodico
 nas_ip: xxx.xxx.xxx.xxx
@@ -6,4 +9,13 @@ nas_ssh_port: 22
 
 # path of backup on the NAS
 nas_path_backup: /my_path
+
+#------
+# Cloud info
+# Password for cloud where there are something to download
+cloud_pw: nonlaso
+
+# app 1
+cloud_url1: https://cloud.example.com/pippo
+cloud_app1: pippo.deb
 

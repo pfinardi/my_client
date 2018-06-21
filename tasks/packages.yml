@@ -98,6 +98,21 @@
 - name: install slack via snap
   command: snap install slack --classic
 
+#-------------------------------
+# Package to download and install
+
+# Barracuda VPN
+- name: download "Barracuda VPN" package
+  become_user: "{{ main_user }}"
+  get_url:
+    url: "{{ cloud_url1 }}"
+    url_password: "{{ cloud_pw }}"
+    dest: /home/{{main_user}}/Downloads/{{cloud_app1}}
+
+- name: install "Barracuda VPN"
+  command: dpkg -i /home/{{main_user}}/Downloads/{{cloud_app1}}
+
+
 
 #-------------------------------
 # Packages to remove
