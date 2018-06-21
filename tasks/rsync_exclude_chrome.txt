@@ -1,0 +1,12 @@
+*Cache
+*cache*
+*.tmp
+Thumbs.db
+*~*
+*/Crash Reports/*
+*/logs/*
+Singleton*
+BrowserMetrics*
+Cookie*
+*Session*
+History*

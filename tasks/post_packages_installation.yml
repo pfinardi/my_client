@@ -1,0 +1,28 @@
+#------------------------------------------
+# Get configurations from backup
+
+- name: Get Remmina configuration from backup
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{nas_user}}@{{nas_ip}}:{{nas_path_backup}}/.remmina /home/{{main_user}}/
+  ignore_errors: true
+
+- name: Get Filezilla configuration from backup
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{nas_user}}@{{nas_ip}}:{{nas_path_backup}}/.filezilla /home/{{main_user}}/
+  ignore_errors: true
+
+- name: Get Google Chrome configuration from backup
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete --exclude-from=tasks/rsync_exclude_chrome.txt {{nas_user}}@{{nas_ip}}:{{nas_path_backup}}/.config/google-chrome /home/{{main_user}}/.config/
+  ignore_errors: true
+
+#-------------------------------------------
+# Other settings
+
+- name: Add Telegram to auto-start applications
+  copy:
+    src: /usr/share/applications/telegramdesktop.desktop
+    dest: /home/{{main_user}}/.config/autostart/telegramdesktop.desktop
+    owner: "{{main_user}}"
+    group: "{{main_user}}"
+    mode: 0664

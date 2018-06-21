@@ -4,28 +4,69 @@
   apt_repository:
     repo: deb http://archive.canonical.com/ubuntu bionic partner
     state: present
-#  update_cache='yes'
 
 - name: add repo numix theme
   apt_repository:
     repo: ppa:numix/ppa
     filename: numix
 
+- name: add repo community theme
+  apt_repository:
+    repo: ppa:communitheme/ppa
+    filename: communitheme
+
 - name: add repo for nextcloud-client
   apt_repository:
     repo: ppa:nextcloud-devs/client
     filename: nextcloud
 
+- name: Add an Apt signing key for Google Chrome
+  apt_key:
+    url: https://dl.google.com/linux/linux_signing_key.pub
+    state: present
+
+- name: enable chrome repo
+  apt_repository:
+    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+    state: present
+    filename: google-chrome
+    update_cache: yes
+
+
+#------------------------------------
+# Post installation suggested
+- name: Install Codec, ms fonts, ..
+  apt: name=ubuntu-restricted-extras state=latest
+
+- name: video packages
+  apt: name={{item}} state=latest
+  with_items:
+    - libdvd-pkg   
+    - libdvdread4
+    - python3
+
+- name: reconfigure libdvd
+  shell: "dpkg-reconfigure -f noninteractive libdvd-pkg"
+  ignore_errors: yes
+
+- name: Install Community Theme
+  apt: name=ubuntu-communitheme-session state=latest
+
+- name: java JDK (openjdk)
+  apt: name={{item}} state=latest
+  with_items:
+    - openjdk-8-jre
+    - icedtea-8-plugin
+
 #------------------------------------
 # Install packages from repo
-- name: Install htop
-  apt: name=htop state=latest
-
 - name: Install packages
   apt: name={{item}} state=latest
   with_items:
     - cryptsetup
+    - keepassx
     - tmux
+    - htop
     - gnome-tweak-tool
     - torbrowser-launcher
     - numix-gtk-theme
@@ -33,3 +74,99 @@
     - nautilus-dropbox
     - nextcloud-client
     - nextcloud-client-nautilus
+    - shutter
+    - pdfshuffler
+    - slack
+    - kazam
+    - retext
+    - telegram-desktop
+    - banshee
+    - gimp
+    - meld
+    - nautilus-compare
+    - vlc
+    - remmina
+    - gnome-shell-extensions
+    - filezilla
+    - google-chrome-stable
+    - chrome-gnome-shell
+    - imagemagick
+    - gdebi
+
+#-------------------------------
+# Package from "snap"
+- name: install slack via snap
+  command: snap install slack --classic
+
+
+#-------------------------------
+# Packages to remove
+- name: remove Gnome Amazon launcher
+  apt: name=ubuntu-web-launchers state=absent
+
+- name: remove Deja-Dup
+  apt: name=deja-dup state=absent
+
+- name: Rhythmbox
+  apt: name=rhythmbox state=absent
+
+#-------------------------------------------
+# ...and finally
+# Shutter problems: "Edit" are not enabled
+- name: Check if libgoocanvas-common is installed
+  command: dpkg -s libgoocanvas-common
+  register: pk_check1
+  ignore_errors: yes
+
+- name: shutter problems - download 1
+  become_user: "{{ main_user }}"
+  get_url:
+    url: https://launchpad.net/ubuntu/+archive/primary/+files/libgoocanvas-common_1.0.0-1_all.deb
+    dest: /home/{{main_user}}/Downloads/
+  when: pk_check1.rc > 0
+
+- name: Check if libgoocanvas3:amd64 is installed
+  command: dpkg -s libgoocanvas3:amd64
+  register: pk_check2
+  ignore_errors: yes
+
+- name: shutter problems - download 2
+  become_user: "{{ main_user }}"
+  get_url:
+    url: https://launchpad.net/ubuntu/+archive/primary/+files/libgoocanvas3_1.0.0-1_amd64.deb
+    dest: /home/{{main_user}}/Downloads/
+  when: pk_check2.rc > 0
+
+- name: Check if libgoo-canvas-perl is installed
+  command: dpkg -s libgoo-canvas-perl
+  register: pk_check3
+  ignore_errors: yes
+
+- name: shutter problems - download 3
+  become_user: "{{ main_user }}"
+  get_url:
+    url: https://launchpad.net/ubuntu/+archive/primary/+files/libgoo-canvas-perl_0.06-2ubuntu3_amd64.deb
+    dest: /home/{{main_user}}/Downloads/
+  when: pk_check3.rc > 0
+
+- name: shutter problems - install package 1
+  command: gdebi -n /home/{{main_user}}/Downloads/libgoocanvas-common_1.0.0-1_all.deb
+  when: pk_check1.rc > 0
+
+- name: shutter problems - install package 2
+  command: gdebi -n /home/{{main_user}}/Downloads/libgoocanvas3_1.0.0-1_amd64.deb
+  when: pk_check2.rc > 0
+
+- name: shutter problems - install package 3
+  command: gdebi -n /home/{{main_user}}/Downloads/libgoo-canvas-perl_0.06-2ubuntu3_amd64.deb
+  when: pk_check3.rc > 0
+
+
+
+- name: Install package necessary for some App indicator in tray bar
+  apt: name=libappindicator-dev state=latest
+
+#- name: ...then install Gtk2::AppIndicator perl extension for libappindicator for Shutter (otherwise it doeasn't appear in tray bar)
+#  command: cpan -i Gtk2::AppIndicator
+# non funziona perchè chiede una risposta e comunque anche eseguendolo interattivo poi l'icone di Shutter non si vede
+

@@ -1,0 +1,15 @@
+Cache
+caches
+*.tmp
+Thumbs.db
+*~*
+.cache
+*/Crash Reports/*
+*/logs/*
+lock
+.parentlock
+urlclassifier*
+*/weave/*
+*/webapps/*
+*/sessionstore-backups/*
+places*

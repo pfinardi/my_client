@@ -12,9 +12,10 @@
 
   vars:
     ssh_known_hosts_file: "{{ lookup('env','HOME') + '/.ssh/known_hosts' }}"
-    ssh_known_hosts: "192.168.63.200"
+#    ssh_known_hosts: "192.168.63.200"
 
   tasks:
     - include: tasks/basic_settings.yml
     - include: tasks/packages.yml
     - include: tasks/cron.yml
+    - include: tasks/post_packages_installation.yml
