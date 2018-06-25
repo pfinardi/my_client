@@ -12,10 +12,11 @@ nas_path_backup: /my_path
 
 #------
 # Cloud info
-# Password for cloud where there are something to download
+# Info about cloud storage where there are something to download and install
+cloud_user: gino
 cloud_pw: nonlaso
+cloud_url: https://cloud.example.com/pippo
 
 # app 1
-cloud_url1: https://cloud.example.com/pippo
 cloud_app1: pippo.deb
 

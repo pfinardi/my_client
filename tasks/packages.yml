@@ -52,11 +52,22 @@
 - name: Install Community Theme
   apt: name=ubuntu-communitheme-session state=latest
 
-- name: java JDK (openjdk)
-  apt: name={{item}} state=latest
-  with_items:
-    - openjdk-8-jre
-    - icedtea-8-plugin
+#-----------------------------------
+# Java
+
+- name: add repo for Oracle Java
+  apt_repository:
+    repo: ppa:webupd8team/java
+    filename: java_oracle
+
+- name: set licence selected
+  shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+
+- name: set licence seen
+  shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
+
+- name: Oracle Java
+  apt: name=oracle-java8-set-default state=latest force=yes
 
 #------------------------------------
 # Install packages from repo
@@ -92,6 +103,7 @@
     - chrome-gnome-shell
     - imagemagick
     - gdebi
+    - net-tools
 
 #-------------------------------
 # Package from "snap"
@@ -105,12 +117,42 @@
 - name: download "Barracuda VPN" package
   become_user: "{{ main_user }}"
   get_url:
-    url: "{{ cloud_url1 }}"
+    url: "{{ cloud_url }}/barracudaVPN/{{ cloud_app1 }}"
+    url_username: "{{ cloud_user }}"
     url_password: "{{ cloud_pw }}"
     dest: /home/{{main_user}}/Downloads/{{cloud_app1}}
 
 - name: install "Barracuda VPN"
-  command: dpkg -i /home/{{main_user}}/Downloads/{{cloud_app1}}
+  apt:
+    deb: /home/{{main_user}}/Downloads/{{cloud_app1}}
+
+- name: download configurazione per "Barracuda VPN client"
+  get_url:
+    url: "{{ cloud_url }}/barracudaVPN/barracudavpn.conf"
+    url_username: "{{ cloud_user }}"
+    url_password: "{{ cloud_pw }}"
+    dest: /etc/barracudavpn/barracudavpn.conf
+    owner: root
+    group: "{{ main_user }}"
+    mode: 0620
+
+- name: download script for "Barracuda VPN"
+  become_user: "{{ main_user }}"
+  get_url:
+    url: "{{ cloud_url }}/barracudaVPN/vpn-barracuda.sh"
+    url_username: "{{ cloud_user }}"
+    url_password: "{{ cloud_pw }}"
+    dest: /home/{{main_user}}/vpn-barracuda.sh
+    mode: 0700
+
+# SAPGUI for Java
+- name: download "SAPGUI for Java"
+  become_user: "{{ main_user }}"
+  get_url:
+    url: "{{ cloud_url }}/SAP/{{ cloud_app2 }}"
+    url_username: "{{ cloud_user }}"
+    url_password: "{{ cloud_pw }}"
+    dest: /home/{{main_user}}/Downloads/{{cloud_app2}}
 
 
 
