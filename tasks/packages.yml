@@ -148,7 +148,7 @@
 - name: download "Barracuda VPN" package
   become_user: "{{ main_user }}"
   get_url:
-    url: "{{ cloud_url }}/barracudaVPN/{{ cloud_app1 }}"
+    url: "{{ cloud_url }}/{{ cloud_path1 }}{{ cloud_app1 }}"
     url_username: "{{ cloud_user }}"
     url_password: "{{ cloud_pw }}"
     dest: /home/{{main_user}}/Downloads/{{cloud_app1}}
@@ -159,7 +159,7 @@
 
 - name: download configurazione per "Barracuda VPN client"
   get_url:
-    url: "{{ cloud_url }}/barracudaVPN/barracudavpn.conf"
+    url: "{{ cloud_url }}/{{ cloud_path1 }}barracudavpn.conf"
     url_username: "{{ cloud_user }}"
     url_password: "{{ cloud_pw }}"
     dest: /etc/barracudavpn/barracudavpn.conf
@@ -170,7 +170,7 @@
 - name: download script for "Barracuda VPN"
   become_user: "{{ main_user }}"
   get_url:
-    url: "{{ cloud_url }}/barracudaVPN/vpn-barracuda.sh"
+    url: "{{ cloud_url }}/{{ cloud_path1 }}vpn-barracuda.sh"
     url_username: "{{ cloud_user }}"
     url_password: "{{ cloud_pw }}"
     dest: /home/{{main_user}}/vpn-barracuda.sh
@@ -180,12 +180,25 @@
 - name: download "SAPGUI for Java"
   become_user: "{{ main_user }}"
   get_url:
-    url: "{{ cloud_url }}/SAP/{{ cloud_app2 }}"
+    url: "{{ cloud_url }}/{{ cloud_path2 }}{{ cloud_app2 }}"
     url_username: "{{ cloud_user }}"
     url_password: "{{ cloud_pw }}"
     dest: /home/{{main_user}}/Downloads/{{cloud_app2}}
 
+# IBM iAccess
+- name: Install and config IBMiAccess from backup
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/IBMiAccess_v1r1 /home/{{main_user}}/
+  ignore_errors: true
 
+# PHPStorm
+- name: download "PHPStorm"
+  become_user: "{{ main_user }}"
+  get_url:
+    url: "{{ cloud_url }}/{{ cloud_path4 }}{{ cloud_app4 }}"
+    url_username: "{{ cloud_user }}"
+    url_password: "{{ cloud_pw }}"
+    dest: /home/{{main_user}}/Downloads/{{cloud_app4}}
 
 #-------------------------------
 # Packages to remove
@@ -248,8 +261,6 @@
 - name: shutter problems - install package 3
   command: gdebi -n /home/{{main_user}}/Downloads/libgoo-canvas-perl_0.06-2ubuntu3_amd64.deb
   when: pk_check3.rc > 0
-
-
 
 - name: Install package necessary for some App indicator in tray bar
   apt: name=libappindicator-dev state=latest

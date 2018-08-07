@@ -26,5 +26,6 @@ cloud_pw: nonlaso
 cloud_url: https://cloud.example.com/pippo
 
 # app 1
+cloud_path1: my-path/
 cloud_app1: pippo.deb
 
