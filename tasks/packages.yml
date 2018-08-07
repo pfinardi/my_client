@@ -32,6 +32,13 @@
     filename: google-chrome
     update_cache: yes
 
+- name: enable postgresql repo (for pgadmin, too)
+  apt_repository:
+    repo: deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main
+    state: present
+    filename: pgdg
+    update_cache: yes
+
 
 #------------------------------------
 # Post installation suggested
@@ -104,6 +111,7 @@
     - imagemagick
     - gdebi
     - net-tools
+    - pgadmin3
 
 #-------------------------------
 # Package from "snap"
