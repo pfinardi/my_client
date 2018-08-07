@@ -1,3 +1,5 @@
+#- debug: msg="{{ rsync_backup_path }}"
+
 #-------------------------------------------
 # Get SSH Keys from NAS
 - name: install sshpass (important to copy ssh id without prompt password)
@@ -27,12 +29,12 @@
     mode=0644
   when: check_known_hosts.stat.exists == False
 
-- name: For each host, scan for its ssh public key
+- name: Check in NAS exist in Known_hosts
   shell: "ssh-keyscan {{ item }},`dig +short {{ item }}`"
   with_items: "{{ nas_ip }}"
   register: ssh_known_host_results
   ignore_errors: yes
-  when: check_known_hosts.stat.exists == False
+  when: check_known_hosts.stat.exists == False and source_type == "nas"
 
 - name: Add/update the public key in the '{{ ssh_known_hosts_file }}'
   known_hosts:
@@ -40,21 +42,27 @@
     key: "{{ item.stdout }}"
     path: "{{ ssh_known_hosts_file }}"
   with_items: "{{ ssh_known_host_results.results }}"
-  when: check_known_hosts.stat.exists == False
+  when: check_known_hosts.stat.exists == False and source_type == "nas"
 
 - name: Check if SSH key exists
   become_user: "{{ main_user }}"
   stat: path=/home/{{main_user}}/.ssh/id_rsa
   register: check_key
   
-- name: Copy SSH key on backup server
+- name: Copy SSH key from NAS backup
   become_user: "{{ main_user }}"
   shell: sshpass -p {{nas_password}} scp -P {{nas_ssh_port}} {{nas_user}}@{{nas_ip}}:{{nas_path_backup}}/.ssh/* /home/{{main_user}}/.ssh
-  when: check_key.stat.exists == False
+  when: check_key.stat.exists == False and source_type == "nas"
+
+- name: Copy SSH key from HD backup
+  become_user: "{{ main_user }}"
+  shell: rsync -avz {{hd_path_backup}}/.ssh/* /home/{{main_user}}/Desktop/ssh
+  when: check_key.stat.exists == False and source_type == "hd"
 
 #------------------------------------------
 # Get Firefox configuration from backup
 - name: Get Firefox configuration from backup
   become_user: "{{ main_user }}"
-  shell: rsync -avz --ignore-errors --delete-excluded --delete --exclude-from=tasks/rsync_exclude_firefox.txt {{nas_user}}@{{nas_ip}}:{{nas_path_backup}}/.mozilla/firefox /home/{{main_user}}/.mozilla/
+  shell: rsync -avz --ignore-errors --delete-excluded --delete --exclude-from=tasks/rsync_exclude_firefox.txt {{rsync_backup_path}}/.mozilla/firefox /home/{{main_user}}/.mozilla/
+#  shell: rsync -avz --ignore-errors --delete-excluded --delete --exclude-from=tasks/rsync_exclude_firefox.txt {{nas_user}}@{{nas_ip}}:{{nas_path_backup}}/.mozilla/firefox /home/{{main_user}}/.mozilla/
   ignore_errors: true

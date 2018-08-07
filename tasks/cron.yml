@@ -35,5 +35,5 @@
     user="paolo"
     minute="45"
     hour="*/3"
-    job="dpkg --get-selections > ./Dropbox/Backup/Settings/paonote_applicazioni.txt"
+    job="dpkg --get-selections > ./Dropbox/Backup/Settings/hpubu_applicazioni.txt"
 

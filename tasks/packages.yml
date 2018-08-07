@@ -20,6 +20,11 @@
     repo: ppa:nextcloud-devs/client
     filename: nextcloud
 
+- name: add repo for Gnome Encfs Manager
+  apt_repository:
+    repo: ppa:gencfsm/ppa
+    filename: gencfsm
+
 - name: Add an Apt signing key for Google Chrome
   apt_key:
     url: https://dl.google.com/linux/linux_signing_key.pub
@@ -32,13 +37,17 @@
     filename: google-chrome
     update_cache: yes
 
+- name: Import repo key for Postgresql
+  apt_key:
+    url: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
+    state: present
+
 - name: enable postgresql repo (for pgadmin, too)
   apt_repository:
     repo: deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main
     state: present
     filename: pgdg
     update_cache: yes
-
 
 #------------------------------------
 # Post installation suggested
@@ -67,11 +76,18 @@
     repo: ppa:webupd8team/java
     filename: java_oracle
 
-- name: set licence selected
-  shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+- name: Check if Oracle Java is installed
+  command: dpkg -s oracle-java8-set-default
+  register: java_install
+  ignore_errors: yes
 
-- name: set licence seen
+- name: set Oracle Java licence selected
+  shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+  when: java_install.rc > 0
+
+- name: set Oracle Java licence seen
   shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
+  when: java_install.rc > 0
 
 - name: Oracle Java
   apt: name=oracle-java8-set-default state=latest force=yes
@@ -112,11 +128,18 @@
     - gdebi
     - net-tools
     - pgadmin3
+    - gnome-encfs-manager
 
 #-------------------------------
 # Package from "snap"
-- name: install slack via snap
+- name: install Slack 
   command: snap install slack --classic
+
+- name: install Spotify 
+  command: snap install spotify
+
+- name: install Mattermost
+  command: snap install mattermost-desktop --beta
 
 #-------------------------------
 # Package to download and install

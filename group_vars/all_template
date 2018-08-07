@@ -1,18 +1,26 @@
 # Main user (must be a sudoers)
 main_user: sonoio
 
+# source_type: external source where there are stored something you need 
+# during installation/configuration. For example: SSH keys, configuration files, 
+# packages to install, ...
+# Possibile values:
+# - nas: NAS
+# - hd: external hard disk
+source_type: hd
+
 # NAS informations
 nas_user: paperino
 nas_password: nontelodico
 nas_ip: xxx.xxx.xxx.xxx
 nas_ssh_port: 22
 
-# path of backup on the NAS
+# path of backup on NAS or on external HD
 nas_path_backup: /my_path
+hd_path_backup: /my_path
 
 #------
-# Cloud info
-# Info about cloud storage where there are something to download and install
+# Info about Cloud Storage where there are something to download
 cloud_user: gino
 cloud_pw: nonlaso
 cloud_url: https://cloud.example.com/pippo

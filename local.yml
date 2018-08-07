@@ -13,6 +13,11 @@
   vars:
     ssh_known_hosts_file: "{{ lookup('env','HOME') + '/.ssh/known_hosts' }}"
 
+    myDict:
+     nas: "{{nas_user}}@{{nas_ip}}:{{nas_path_backup}}"
+     hd: "{{ hd_path_backup }}"
+    rsync_backup_path: '{{myDict[source_type | default("this key does not exist in the dict")] | default("") }}'
+
   tasks:
     - include: tasks/basic_settings.yml
     - include: tasks/packages.yml
