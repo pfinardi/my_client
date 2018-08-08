@@ -21,5 +21,6 @@
   tasks:
     - include: tasks/basic_settings.yml
     - include: tasks/packages.yml
+    - include: tasks/git-repo.yml
     - include: tasks/cron.yml
     - include: tasks/post_packages_installation.yml

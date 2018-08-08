@@ -196,6 +196,54 @@
   shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/IBM /home/{{main_user}}/
   ignore_errors: true
 
+- name: ...again config IBMiAccess
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.local/share/applications/com-ibm-iaccess-launch-acslaunchpad.desktop /home/{{main_user}}/.local/share/applications/
+  ignore_errors: true
+
+- name: ...again config IBMiAccess
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.local/share/icons/com-ibm-iaccess-launch-acslaunchpad.png /home/{{main_user}}/.local/share/icons/
+  ignore_errors: true
+
+# Pentaho Data Integration (kettle)
+- name: Install Pentaho Data Integration (kettle) from backup
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/kettle /home/{{main_user}}/
+  ignore_errors: true
+
+- name: Install libwebkitgtk-1.0-0 (necessary for PDI)
+  apt: name=libwebkitgtk-1.0-0 state=latest
+
+
+
+# DBEdit 2
+- name: Install DBEdit 2 from backup
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/DBEdit /home/{{main_user}}/
+  ignore_errors: true
+
+- name: DBEdit preferences
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/dbedit.xml /home/{{main_user}}/
+  ignore_errors: true
+
+- name: DBEdit preferences
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/dbedit.xml /home/{{main_user}}/
+  ignore_errors: true
+
+- name: DBEdit icons
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.local/share/icons/dbedit-dbedit.png /home/{{main_user}}/.local/share/icons/
+  ignore_errors: true
+
+- name: DBEdit application
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.local/share/applications/dbedit-dbedit.desktop /home/{{main_user}}/.local/share/applications/
+  ignore_errors: true
+
+
 # PHPStorm
 - name: download "PHPStorm"
   become_user: "{{ main_user }}"
