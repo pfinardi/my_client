@@ -253,6 +253,18 @@
     url_password: "{{ cloud_pw }}"
     dest: /home/{{main_user}}/Downloads/{{cloud_app4}}
 
+- name: Check if directory PhpStorm exists
+  become_user: "{{ main_user }}"
+  stat: path=/home/{{main_user}}/PhpStorm
+  register: check_phpstorm
+
+- name: Create directory PhpStorm
+  become_user: "{{ main_user }}"
+  file: path=/home/{{main_user}}/PhpStorm
+    state=directory
+    mode=0740
+  when: check_phpstorm.stat.exists == False or check_phpstorm.stat.isdir == False
+
 - name: PhpStorm - Extract archive
   unarchive: src=/home/{{main_user}}/Downloads/{{cloud_app4}}
              dest=/home/{{main_user}}/PhpStorm
