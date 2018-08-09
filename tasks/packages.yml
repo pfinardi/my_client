@@ -233,11 +233,6 @@
   shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/dbedit.xml /home/{{main_user}}/
   ignore_errors: true
 
-- name: DBEdit preferences
-  become_user: "{{ main_user }}"
-  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/dbedit.xml /home/{{main_user}}/
-  ignore_errors: true
-
 - name: DBEdit icons
   become_user: "{{ main_user }}"
   shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.local/share/icons/dbedit-dbedit.png /home/{{main_user}}/.local/share/icons/
@@ -257,6 +252,16 @@
     url_username: "{{ cloud_user }}"
     url_password: "{{ cloud_pw }}"
     dest: /home/{{main_user}}/Downloads/{{cloud_app4}}
+
+- name: PhpStorm preferences
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.PhpStorm2016.2 /home/{{main_user}}/
+  ignore_errors: true
+
+- name: PhpStorm - change projects path
+  become_user: "{{ main_user }}"
+  shell: find /home/{{main_user}}/.PhpStorm2016.2 -type f -print0 | xargs -0 sed -i 's/ESC\/PHPStorm/git-repo/g'
+  ignore_errors: true
 
 #-------------------------------
 # Packages to remove
