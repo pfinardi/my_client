@@ -1,0 +1,35 @@
+- name: Check if directory "git-repo" exists
+  become_user: "{{ main_user }}"
+  stat: path=/home/{{main_user}}/git-repo
+  register: check_gitrepo
+
+- name: Create directory .ssh
+  become_user: "{{ main_user }}"
+  file: path=/home/{{main_user}}/git-repo
+    state=directory
+    mode=0700
+  when: check_gitrepo.stat.exists == False or check_gitrepo.stat.isdir == False
+
+- name: Clone repo kettle pil
+  become_user: "{{ main_user }}"
+  git:
+    repo: git@bitbucket.org:escsrl/repository_kettle_pil.git
+    dest: /home/{{ main_user }}/git-repo/repo_kettle/
+    version: master
+    accept_hostkey: yes
+    key_file: /home/{{ main_user }}/.ssh/id_rsa
+
+- name: Clone repo statistiche
+  become_user: "{{ main_user }}"
+  git:
+    repo: git@bitbucket.org:escsrl/esc_portale_pil.git
+    dest: /home/{{ main_user }}/git-repo/esc_portale_pil_sl_pfinardi/
+    version: master
+    accept_hostkey: yes
+    key_file: /home/{{ main_user }}/.ssh/id_rsa
+
+- name: Statistiche - application.ini
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/ESC/PHPStorm/esc_portale_pil_sl_pfinardi/application/configs/application.ini /home/{{main_user}}/git-repo/esc_portale_pil_sl_pfinardi/application/configs/
+  ignore_errors: true
+
