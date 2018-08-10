@@ -19,7 +19,7 @@
     user="paolo"
     minute="15"
     hour="*/3"
-    job="crontab -l > /home/paolo/Cloud_Sefi/Backup/Settings/hpubu_crontab.txt"
+    job="crontab -l > /home/paolo/Cloud_Sefi/Backup/Settings/paonote_crontab.txt"
 
 - name: backup ANACRONTAB definitions
   cron:
@@ -27,13 +27,58 @@
     user="paolo"
     minute="15"
     hour="*/3"
-    job="cat /etc/anacrontab > /home/paolo/Dropbox/Backup/Settings/hpubu_anacrontab.txt"
+    job="cat /etc/anacrontab > /home/paolo/Cloud_Sefi/Backup/Settings/paonote_anacrontab.txt"
 
 - name: list installed packages
   cron:
-    name="List installed packages"
+    name="list installed packages"
     user="paolo"
     minute="45"
     hour="*/3"
-    job="dpkg --get-selections > ./Dropbox/Backup/Settings/hpubu_applicazioni.txt"
+    job="dpkg --get-selections > ./Cloud_Sefi/Backup/Settings/paonote_applicazioni.txt"
+
+- name: files needed for backup jobs
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/backup_* /home/{{main_user}}/
+  ignore_errors: true
+
+- name: Backup home on external HD
+  cron:
+    name="Backup home on external HD"
+    user="paolo"
+    minute="0"
+    hour="*/2"
+    job="rsync -avz --delete-excluded --delete --ignore-errors --exclude-from=backup_exclude_rsync.txt --stats /home/paolo/ /media/paolo/LupinCrypt/Backup/home/ > ZBck_HD_HOME_Paolo.log 2>/dev/null"
+
+- name: Backup home on NAS
+  cron:
+    name="Backup home on NAS"
+    user="paolo"
+    minute="20"
+    hour="*/2"
+    job="rsync -avz --ignore-errors --delete-excluded --delete --stats --exclude-from=/home/paolo/backup_exclude_rsync.txt  /home/paolo admin@192.168.63.200:/volume1/NetBackup/HP_1604/ > /home/paolo/ZBck_NAS_home.log 2>/home/paolo/ZBck_NAS_home_errors.log"
+
+#----------------------------
+# crontab di root
+
+- name: backup CRONTAB definitions
+  cron:
+    name="Backup CRONTAB definitions"
+    minute="25"
+    hour="*/3"
+    job="crontab -l > /home/paolo/Cloud_Sefi/Backup/Settings/paonote_crontab_root.txt"
+
+- name: Backup configurazione Network Magager
+  cron:
+    name="Backup configurazione Network Magager"
+    minute="03"
+    hour="*"
+    job="/home/paolo/backup_NetworkManager.sh"
+
+- name: Backup /etc
+  cron:
+    name="Backup /etc"
+    minute="03"
+    hour="*"
+    job="rsync -avz --delete --ignore-errors --stats /etc/ /media/paolo/LupinCrypt/Backup/etc/ > /home/paolo/ZLog_Bck_ETC_Paolo.log 2>/dev/null"
 
