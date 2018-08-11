@@ -1,10 +1,10 @@
 - name: Cron - delete temporary files
   cron: 
     name="Delete temporary files - {{item}}"
-    user="{{main_users}}"
+    user="{{main_user}}"
     minute="10"
     hour="13"
-    job="find /home/{{main_users}}/{{item}}/ -type f -name '*~' -delete > /dev/null"
+    job="find /home/{{main_user}}/{{item}}/ -type f -name '*~' -delete > /dev/null"
   with_items:
     - Desktop
     - Documents
@@ -16,23 +16,23 @@
 - name: backup CRONTAB definitions
   cron:
     name="Backup CRONTAB definitions"
-    user="{{main_users}}"
+    user="{{main_user}}"
     minute="15"
     hour="*/3"
-    job="crontab -l > /home/{{main_users}}/Cloud_Sefi/Backup/Settings/{{hostname}}_crontab.txt"
+    job="crontab -l > /home/{{main_user}}/Cloud_Sefi/Backup/Settings/{{hostname}}_crontab.txt"
 
 - name: backup ANACRONTAB definitions
   cron:
     name="Backup ANACRONTAB definitions"
-    user="{{main_users}}"
+    user="{{main_user}}"
     minute="15"
     hour="*/3"
-    job="cat /etc/anacrontab > /home/{{main_users}}/Cloud_Sefi/Backup/Settings/{{hostname}}_anacrontab.txt"
+    job="cat /etc/anacrontab > /home/{{main_user}}/Cloud_Sefi/Backup/Settings/{{hostname}}_anacrontab.txt"
 
 - name: list installed packages
   cron:
     name="list installed packages"
-    user="{{main_users}}"
+    user="{{main_user}}"
     minute="45"
     hour="*/3"
     job="dpkg --get-selections > ./Cloud_Sefi/Backup/Settings/{{hostname}}_applicazioni.txt"
@@ -45,18 +45,18 @@
 - name: Backup home on external HD
   cron:
     name="Backup home on external HD"
-    user="{{main_users}}"
+    user="{{main_user}}"
     minute="0"
     hour="*/2"
-    job="rsync -avz --delete-excluded --delete --ignore-errors --exclude-from=backup_exclude_rsync.txt --stats /home/{{main_users}}/ /media/{{main_users}}/LupinCrypt/Backup/home/ > ZBck_HD_HOME_{{main_users}}.log 2>/dev/null"
+    job="rsync -avz --delete-excluded --delete --ignore-errors --exclude-from=backup_exclude_rsync.txt --stats /home/{{main_user}}/ /media/{{main_user}}/LupinCrypt/Backup/home/ > ZBck_HD_HOME_{{main_user}}.log 2>/dev/null"
 
 - name: Backup home on NAS
   cron:
     name="Backup home on NAS"
-    user="{{main_users}}"
+    user="{{main_user}}"
     minute="20"
     hour="*/2"
-    job="rsync -avz --ignore-errors --delete-excluded --delete --stats --exclude-from=/home/{{main_users}}/backup_exclude_rsync.txt  /home/{{main_users}} {{nas_user}}@{{nas_ip}}:/volume1/NetBackup/HP_1604/ > /home/{{main_users}}/ZBck_NAS_home.log 2>/home/{{main_users}}/ZBck_NAS_home_errors.log"
+    job="rsync -avz --ignore-errors --delete-excluded --delete --stats --exclude-from=/home/{{main_user}}/backup_exclude_rsync.txt  /home/{{main_user}} {{nas_user}}@{{nas_ip}}:/volume1/NetBackup/HP_1604/ > /home/{{main_user}}/ZBck_NAS_home.log 2>/home/{{main_user}}/ZBck_NAS_home_errors.log"
 
 #----------------------------
 # crontab di root
@@ -66,19 +66,19 @@
     name="Backup CRONTAB definitions"
     minute="25"
     hour="*/3"
-    job="crontab -l > /home/{{main_users}}/Cloud_Sefi/Backup/Settings/{{hostname}}_crontab_root.txt"
+    job="crontab -l > /home/{{main_user}}/Cloud_Sefi/Backup/Settings/{{hostname}}_crontab_root.txt"
 
 - name: Backup configurazione Network Magager
   cron:
     name="Backup configurazione Network Magager"
     minute="03"
     hour="*"
-    job="/home/{{main_users}}/backup_NetworkManager.sh"
+    job="/home/{{main_user}}/backup_NetworkManager.sh"
 
 - name: Backup /etc
   cron:
     name="Backup /etc"
     minute="03"
     hour="*"
-    job="rsync -avz --delete --ignore-errors --stats /etc/ /media/{{main_users}}/LupinCrypt/Backup/etc/ > /home/{{main_users}}/ZLog_Bck_ETC_{{main_users}}.log 2>/dev/null"
+    job="rsync -avz --delete --ignore-errors --stats /etc/ /media/{{main_user}}/LupinCrypt/Backup/etc/ > /home/{{main_user}}/ZLog_Bck_ETC_{{main_user}}.log 2>/dev/null"
 
