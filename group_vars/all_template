@@ -1,5 +1,6 @@
 # Main user (must be a sudoers)
 main_user: sonoio
+hostname: mypc
 
 # source_type: external source where there are stored something you need 
 # during installation/configuration. For example: SSH keys, configuration files, 
@@ -16,14 +17,14 @@ nas_ip: xxx.xxx.xxx.xxx
 nas_ssh_port: 22
 
 # path of backup on NAS or on external HD
-nas_path_backup: /my_path
-hd_path_backup: /my_path
+nas_path_backup: /my/path
+hd_path_backup: /my/path
 
 #------
 # Info about Cloud Storage where there are something to download
 cloud_user: gino
 cloud_pw: nonlaso
-cloud_url: https://cloud.example.com/pippo
+cloud_url: https://cloud.example.com/pippo/remote.php/dav/files/scaricatore/AppExtra
 
 # app 1
 cloud_path1: my-path/
