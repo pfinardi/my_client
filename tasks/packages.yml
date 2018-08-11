@@ -49,6 +49,19 @@
     filename: pgdg
     update_cache: yes
 
+- name: Add an Apt signing key for Oracle VirtualBox
+  apt_key:
+    url: https://www.virtualbox.org/download/oracle_vbox_2016.asc -O-
+    state: present
+
+- name: enable Oracle VirtualBox repo
+  apt_repository:
+    repo: deb http://download.virtualbox.org/virtualbox/debian bionic contrib
+    state: present
+    filename: pgdg
+    update_cache: yes
+
+
 #------------------------------------
 # Post installation suggested
 - name: Install Codec, ms fonts, ..
@@ -125,10 +138,16 @@
     - google-chrome-stable
     - chrome-gnome-shell
     - imagemagick
+    - nautilus-image-converter
     - gdebi
     - net-tools
     - pgadmin3
     - gnome-encfs-manager
+    - build-essential
+    - dkms
+    - unzip
+    - wget
+    - virtualbox-5.2
 
 #-------------------------------
 # Package from "snap"
@@ -289,6 +308,28 @@
 
 - name: Rhythmbox
   apt: name=rhythmbox state=absent
+
+#--------------------------------
+# Oracle VirualBox
+- name: Add the main user to VirtualBox group
+  user:
+    name: "{{ main_user }}"
+    group: vboxusers
+
+- name: Check if Extension pack exist
+  stat: path=/home/{{main_user}}/Downloads/Oracle_VM_VirtualBox_Extension_Pack-5.2.14.vbox-extpack
+  register: check_extvbox
+
+- name: download Oracle_VM_VirtualBox_Extension_Pack-5.2.16.vbox-extpack
+  become_user: "{{ main_user }}"
+  get_url:
+    url: https://download.virtualbox.org/virtualbox/5.2.16/Oracle_VM_VirtualBox_Extension_Pack-5.2.16.vbox-extpack
+    dest: /home/{{main_user}}/Downloads/
+  when: check_extvbox.stat.exists == False
+
+- name: install Extension pack for VirtualBox
+  shell: VBoxManage extpack install /home/{{main_user}}/Downloads/Oracle_VM_VirtualBox_Extension_Pack-5.2.16.vbox-extpack
+
 
 #-------------------------------------------
 # ...and finally
