@@ -63,7 +63,7 @@
 # Get Firefox configuration from backup
 - name: Check if profile.ini exists
   become_user: "{{ main_user }}"
-  stat: path=/home/{{main_user}}/.mozilla/firefox/id_rsa
+  stat: path=/home/{{main_user}}/.mozilla/firefox/profiles.ini
   register: check_profile
 
 - name: Get Firefox configuration from backup

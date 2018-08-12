@@ -312,24 +312,7 @@
 #--------------------------------
 # Oracle VirualBox
 - name: Add the main user to VirtualBox group
-  user:
-    name: "{{ main_user }}"
-    group: vboxusers
-
-- name: Check if Extension pack exist
-  stat: path=/home/{{main_user}}/Downloads/Oracle_VM_VirtualBox_Extension_Pack-5.2.14.vbox-extpack
-  register: check_extvbox
-
-- name: download Oracle_VM_VirtualBox_Extension_Pack-5.2.16.vbox-extpack
-  become_user: "{{ main_user }}"
-  get_url:
-    url: https://download.virtualbox.org/virtualbox/5.2.16/Oracle_VM_VirtualBox_Extension_Pack-5.2.16.vbox-extpack
-    dest: /home/{{main_user}}/Downloads/
-  when: check_extvbox.stat.exists == False
-
-- name: install Extension pack for VirtualBox
-  shell: VBoxManage extpack install /home/{{main_user}}/Downloads/Oracle_VM_VirtualBox_Extension_Pack-5.2.16.vbox-extpack
-
+  shell: usermod -aG vboxusers {{ main_user }}
 
 #-------------------------------------------
 # ...and finally
