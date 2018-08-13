@@ -61,7 +61,6 @@
     filename: pgdg
     update_cache: yes
 
-
 #------------------------------------
 # Post installation suggested
 - name: Install Codec, ms fonts, ..
@@ -148,6 +147,13 @@
     - unzip
     - wget
     - virtualbox-5.2
+    - pandoc
+    - texlive-latex-recommended
+    - texlive-xetex
+    - texlive-luatex
+    - pandoc-citeproc
+    - texlive-latex-extra
+    - context
 
 #-------------------------------
 # Package from "snap"
