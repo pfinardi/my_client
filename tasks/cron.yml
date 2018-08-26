@@ -48,7 +48,7 @@
     user="{{main_user}}"
     minute="0"
     hour="*/2"
-    job="rsync -avz --delete-excluded --delete --ignore-errors --exclude-from=backup_exclude_rsync.txt --stats /home/{{main_user}}/ /media/{{main_user}}/LupinCrypt/Backup/home/ > ZBck_HD_HOME_{{main_user}}.log 2>/dev/null"
+    job="rsync -avz --delete-excluded --delete --ignore-errors --exclude-from=backup_exclude_rsync.txt --stats /home/{{main_user}}/ /media/{{main_user}}/LupinCrypt/Backup/{{hostname}}/home/ > ZBck_HD_HOME_{{main_user}}.log 2>/dev/null"
 
 - name: Backup home on NAS
   cron:
@@ -56,7 +56,7 @@
     user="{{main_user}}"
     minute="20"
     hour="*/2"
-    job="rsync -avz --ignore-errors --delete-excluded --delete --stats --exclude-from=/home/{{main_user}}/backup_exclude_rsync.txt  /home/{{main_user}} {{nas_user}}@{{nas_ip}}:/volume1/NetBackup/HP_1604/ > /home/{{main_user}}/ZBck_NAS_home.log 2>/home/{{main_user}}/ZBck_NAS_home_errors.log"
+    job="rsync -avz --ignore-errors --delete-excluded --delete --stats --exclude-from=/home/{{main_user}}/backup_exclude_rsync.txt  /home/{{main_user}} {{nas_user}}@{{nas_ip}}:/volume1/NetBackup/{{hostname}}/ > /home/{{main_user}}/ZBck_NAS_home.log 2>/home/{{main_user}}/ZBck_NAS_home_errors.log"
 
 #----------------------------
 # crontab di root
