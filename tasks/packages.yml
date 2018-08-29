@@ -223,11 +223,6 @@
 
 - name: ...again config IBMiAccess
   become_user: "{{ main_user }}"
-  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.local/share/applications/com-ibm-iaccess-launch-acslaunchpad.desktop /home/{{main_user}}/.local/share/applications/
-  ignore_errors: true
-
-- name: ...again config IBMiAccess
-  become_user: "{{ main_user }}"
   shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.local/share/icons/com-ibm-iaccess-launch-acslaunchpad.png /home/{{main_user}}/.local/share/icons/
   ignore_errors: true
 
@@ -261,11 +256,6 @@
 - name: DBEdit icons
   become_user: "{{ main_user }}"
   shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.local/share/icons/dbedit-dbedit.png /home/{{main_user}}/.local/share/icons/
-  ignore_errors: true
-
-- name: DBEdit application
-  become_user: "{{ main_user }}"
-  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.local/share/applications/dbedit-dbedit.desktop /home/{{main_user}}/.local/share/applications/
   ignore_errors: true
 
 
@@ -303,6 +293,20 @@
   become_user: "{{ main_user }}"
   shell: find /home/{{main_user}}/.PhpStorm2016.2 -type f -print0 | xargs -0 sed -i 's/ESC\/PHPStorm/git-repo/g'
   ignore_errors: true
+
+#-------------------------------
+# download from cloud of the ".desktop" files for some applications
+- name: download ".desktop" files
+  become_user: "{{ main_user }}"
+  get_url:
+    url: "{{ cloud_url }}/desktop_files/{{item}}.desktop"
+    url_username: "{{ cloud_user }}"
+    url_password: "{{ cloud_pw }}"
+    dest: /home/{{main_user}}/.local/share/applications/
+  with_items:
+    - dbedit
+    - spoon
+    - com-ibm-iaccess-launch-acslaunchpad
 
 #-------------------------------
 # Packages to remove
