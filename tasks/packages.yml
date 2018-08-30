@@ -156,6 +156,10 @@
     - context
     - fonts-symbola
 
+- name: Install to manage Exchange Calendar in Gnome Calendar
+  apt: name=evolution-ews state=latest
+
+
 #-------------------------------
 # Package from "snap"
 - name: install Slack 
