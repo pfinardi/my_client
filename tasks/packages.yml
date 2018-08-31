@@ -155,6 +155,7 @@
     - texlive-latex-extra
     - context
     - fonts-symbola
+    - gufw
 
 - name: Install to manage Exchange Calendar in Gnome Calendar
   apt: name=evolution-ews state=latest
