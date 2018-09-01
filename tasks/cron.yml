@@ -37,10 +37,24 @@
     hour="*/3"
     job="dpkg --get-selections > ./Cloud_Sefi/Backup/Settings/{{hostname}}_applicazioni.txt"
 
+#-----------------------------
+# Scheduled backups
 - name: files needed for backup jobs
   become_user: "{{ main_user }}"
   shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/backup_* /home/{{main_user}}/
   ignore_errors: true
+
+- name: Check if exist backup destination path on HD
+  become_user: "{{ main_user }}"
+  stat: path=/media/{{main_user}}/LupinCrypt/Backup/{{hostname}}
+  register: check_hd_dir
+
+- name: Create backup directory on HD
+  become_user: "{{ main_user }}"
+  file: path=/home/{{main_user}}/git-repo
+    state=directory
+    mode=0740
+  when: check_hd_dir.stat.exists == False or check_hd_dir.stat.isdir == False
 
 - name: Backup home on external HD
   cron:
@@ -48,7 +62,7 @@
     user="{{main_user}}"
     minute="0"
     hour="*/2"
-    job="rsync -avz --delete-excluded --delete --ignore-errors --exclude-from=backup_exclude_rsync.txt --stats /home/{{main_user}}/ /media/{{main_user}}/LupinCrypt/Backup/{{hostname}}/home/ > ZBck_HD_HOME_{{main_user}}.log 2>/dev/null"
+    job="rsync -avz --delete-excluded --delete --ignore-errors --exclude-from=backup_exclude_rsync.txt --stats /home/{{main_user}} /media/{{main_user}}/LupinCrypt/Backup/{{hostname}}/ > ZBck_HD_HOME_{{hostname}}_{{main_user}}.log 2>/dev/null"
 
 - name: Backup home on NAS
   cron:
