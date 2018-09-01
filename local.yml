@@ -1,5 +1,5 @@
 ########################################################
-## ansible-playbook -s local.yml
+## ansible-playbook  local.yml
 ########################################################
 - hosts: localhost
 

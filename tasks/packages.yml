@@ -61,6 +61,19 @@
     filename: pgdg
     update_cache: yes
 
+- name: Add an Apt signing key for Typora (markdown editor)
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: BA300B7755AFCFAE
+    state: present
+
+- name: enable Typora (markdown editor) repo
+  apt_repository:
+    repo: deb https://typora.io/linux ./
+    state: present
+    filename: typora
+    update_cache: yes
+
 #------------------------------------
 # Post installation suggested
 - name: Install Codec, ms fonts, ..
@@ -156,6 +169,7 @@
     - context
     - fonts-symbola
     - gufw
+    - typora
 
 - name: Install to manage Exchange Calendar in Gnome Calendar
   apt: name=evolution-ews state=latest
