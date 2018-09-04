@@ -37,3 +37,10 @@
     owner: "{{main_user}}"
     group: "{{main_user}}"
     mode: 0664
+
+- name: change samba config to discover samba hosts netbios
+  lineinfile:
+    path: /etc/samba/smb.conf
+#    regexp: '^Listen '
+    insertafter: 'workgroup = WORKGROUP'
+    line: '   client max protocol = NT1'
