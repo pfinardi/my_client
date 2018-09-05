@@ -175,6 +175,14 @@
 - name: Install to manage Exchange Calendar in Gnome Calendar
   apt: name=evolution-ews state=latest
 
+# Install packages for power management (save battery)
+- name: packages for save battery (power management)
+  apt: name={{item}} state=latest
+  with_items:
+    - tlp
+    - tlp-rdw
+    - powertop
+
 
 #-------------------------------
 # Package from "snap"
