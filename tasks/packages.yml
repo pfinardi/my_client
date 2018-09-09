@@ -171,6 +171,8 @@
     - gufw
     - typora
     - smbclient
+    - network-manager-openvpn
+    - network-manager-openvpn-gnome
 
 - name: Install to manage Exchange Calendar in Gnome Calendar
   apt: name=evolution-ews state=latest
