@@ -171,6 +171,8 @@
     - gufw
     - typora
     - smbclient
+    - network-manager-openvpn
+    - network-manager-openvpn-gnome
     - printer-driver-cups-pdf
 
 - name: Install to manage Exchange Calendar in Gnome Calendar
