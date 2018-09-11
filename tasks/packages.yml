@@ -171,6 +171,7 @@
     - gufw
     - typora
     - smbclient
+    - printer-driver-cups-pdf
 
 - name: Install to manage Exchange Calendar in Gnome Calendar
   apt: name=evolution-ews state=latest
