@@ -175,6 +175,7 @@
     - network-manager-openvpn-gnome
     - network-manager-vpnc-gnome
     - network-manager-openconnect-gnome
+    - xul-ext-lightning
 
 - name: Install to manage Exchange Calendar in Gnome Calendar
   apt: name=evolution-ews state=latest
