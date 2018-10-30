@@ -94,5 +94,5 @@
     name="Backup /etc"
     minute="03"
     hour="*"
-    job="rsync -avz --delete --ignore-errors --stats /etc/ /media/{{main_user}}/LupinCrypt/Backup/etc/ > /home/{{main_user}}/ZLog_Bck_ETC_{{main_user}}.log 2>/dev/null"
+    job="rsync -avz --delete --ignore-errors --stats /etc/ /media/{{main_user}}/LupinCrypt/Backup/{{hostname}}/etc/ > /home/{{main_user}}/ZLog_Bck_ETC_{{main_user}}.log 2>/dev/null"
 

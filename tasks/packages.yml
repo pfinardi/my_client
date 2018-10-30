@@ -237,13 +237,13 @@
     mode: 0700
 
 # SAPGUI for Java
-- name: download "SAPGUI for Java"
-  become_user: "{{ main_user }}"
-  get_url:
-    url: "{{ cloud_url }}/{{ cloud_path2 }}{{ cloud_app2 }}"
-    url_username: "{{ cloud_user }}"
-    url_password: "{{ cloud_pw }}"
-    dest: /home/{{main_user}}/Downloads/{{cloud_app2}}
+#- name: download "SAPGUI for Java"
+#  become_user: "{{ main_user }}"
+#  get_url:
+#    url: "{{ cloud_url }}/{{ cloud_path2 }}{{ cloud_app2 }}"
+#    url_username: "{{ cloud_user }}"
+#    url_password: "{{ cloud_pw }}"
+#    dest: /home/{{main_user}}/Downloads/{{cloud_app2}}
 
 # IBM iAccess
 - name: Install IBMiAccess from backup
