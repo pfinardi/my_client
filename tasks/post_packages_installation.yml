@@ -16,10 +16,12 @@
   shell: rsync -avz --ignore-errors --delete-excluded --delete --exclude-from=tasks/rsync_exclude_chrome.txt {{rsync_backup_path}}/.config/google-chrome /home/{{main_user}}/.config/
   ignore_errors: true
 
+# configurazione SAPGUI (se prevista)
 - name: Get SAPGUI configuration from backup
   become_user: "{{ main_user }}"
   shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.SAPGUI /home/{{main_user}}/
   ignore_errors: true
+  when: cloud_sapapp != "no"
 
 - name: Thunderbird configuration from backup
   become_user: "{{ main_user }}"
@@ -44,3 +46,10 @@
 #    regexp: '^Listen '
     insertafter: 'workgroup = WORKGROUP'
     line: '   client max protocol = NT1'
+
+# sync dei file .desktop
+- name: sync application .desktop
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.local/share/applications/ /home/{{main_user}}/.local/share/applications/
+  ignore_errors: true
+

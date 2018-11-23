@@ -177,6 +177,8 @@
     - network-manager-openconnect-gnome
     - xul-ext-lightning
     - printer-driver-cups-pdf
+    - gawk
+    - translate-shell
 
 - name: Install to manage Exchange Calendar in Gnome Calendar
   apt: name=evolution-ews state=latest
@@ -217,33 +219,36 @@
   apt:
     deb: /home/{{main_user}}/Downloads/{{cloud_app1}}
 
-- name: download configurazione per "Barracuda VPN client"
-  get_url:
-    url: "{{ cloud_url }}/{{ cloud_path1 }}barracudavpn.conf"
-    url_username: "{{ cloud_user }}"
-    url_password: "{{ cloud_pw }}"
-    dest: /etc/barracudavpn/barracudavpn.conf
-    owner: root
-    group: "{{ main_user }}"
-    mode: 0620
+#!!!!!!!!!!!!!! prendere da backup su HD la configurazione e lo script
+#- name: download configurazione per "Barracuda VPN client"
+#  get_url:
+#    url: "{{ cloud_url }}/{{ cloud_path1 }}barracudavpn.conf"
+#    url_username: "{{ cloud_user }}"
+#    url_password: "{{ cloud_pw }}"
+#    dest: /etc/barracudavpn/barracudavpn.conf
+#    owner: root
+#    group: "{{ main_user }}"
+#    mode: 0620
 
-- name: download script for "Barracuda VPN"
-  become_user: "{{ main_user }}"
-  get_url:
-    url: "{{ cloud_url }}/{{ cloud_path1 }}vpn-barracuda.sh"
-    url_username: "{{ cloud_user }}"
-    url_password: "{{ cloud_pw }}"
-    dest: /home/{{main_user}}/vpn-barracuda.sh
-    mode: 0700
+#- name: download script for "Barracuda VPN"
+#  become_user: "{{ main_user }}"
+#  get_url:
+#    url: "{{ cloud_url }}/{{ cloud_path1 }}vpn-barracuda.sh"
+#    url_username: "{{ cloud_user }}"
+#    url_password: "{{ cloud_pw }}"
+#    dest: /home/{{main_user}}/vpn-barracuda.sh
+#    mode: 0700
 
+#!!!!!!!!!!!!!!!!!!!! testare che se la variabile è vuota non bisogna fare niente
 # SAPGUI for Java
 #- name: download "SAPGUI for Java"
 #  become_user: "{{ main_user }}"
 #  get_url:
-#    url: "{{ cloud_url }}/{{ cloud_path2 }}{{ cloud_app2 }}"
+#    url: "{{ cloud_url }}/{{ cloud_sappath }}{{ cloud_sapapp }}"
 #    url_username: "{{ cloud_user }}"
 #    url_password: "{{ cloud_pw }}"
-#    dest: /home/{{main_user}}/Downloads/{{cloud_app2}}
+#    dest: /home/{{main_user}}/Downloads/{{cloud_sapapp}}
+#  when: cloud_sapapp != 'no'
 
 # IBM iAccess
 - name: Install IBMiAccess from backup
@@ -328,6 +333,9 @@
   become_user: "{{ main_user }}"
   shell: find /home/{{main_user}}/.PhpStorm2016.2 -type f -print0 | xargs -0 sed -i 's/ESC\/PHPStorm/git-repo/g'
   ignore_errors: true
+
+#!!!!!!!!! aggiungere la parte di kerio (forse)
+
 
 #-------------------------------
 # download from cloud of the ".desktop" files for some applications
