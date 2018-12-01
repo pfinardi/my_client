@@ -47,9 +47,15 @@
     insertafter: 'workgroup = WORKGROUP'
     line: '   client max protocol = NT1'
 
-# sync dei file .desktop
+# .desktop files sync
 - name: sync application .desktop
   become_user: "{{ main_user }}"
   shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.local/share/applications/ /home/{{main_user}}/.local/share/applications/
+  ignore_errors: true
+
+# local icons sync
+- name: sync local icons
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.local/share/icons/ /home/{{main_user}}/.local/share/icons/
   ignore_errors: true
 
