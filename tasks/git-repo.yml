@@ -10,14 +10,14 @@
     mode=0700
   when: check_gitrepo.stat.exists == False or check_gitrepo.stat.isdir == False
 
-- name: Clone repo kettle pil
-  become_user: "{{ main_user }}"
-  git:
-    repo: git clone git@bitbucket.org:pfinardi/repo_kettle.git
-    dest: /home/{{ main_user }}/git-repo/repo_kettle/
-    version: master
-    accept_hostkey: yes
-    key_file: /home/{{ main_user }}/.ssh/id_rsa
+#- name: Clone repo kettle pil
+#  become_user: "{{ main_user }}"
+#  git:
+#    repo: git clone git@bitbucket.org:pfinardi/repo_kettle.git
+#    dest: /home/{{ main_user }}/git-repo/repo_kettle/
+#    version: master
+#    accept_hostkey: yes
+#    key_file: /home/{{ main_user }}/.ssh/id_rsa
 
 - name: Clone repo statistiche
   become_user: "{{ main_user }}"

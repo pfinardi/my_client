@@ -59,3 +59,9 @@
   shell: rsync -avz --ignore-errors {{rsync_backup_path}}/.local/share/icons/ /home/{{main_user}}/.local/share/icons/
   ignore_errors: true
 
+# sync document templates
+- name: sync document templates
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors {{rsync_backup_path}}/Templates/ /home/{{main_user}}/Templates/
+  ignore_errors: true
+
