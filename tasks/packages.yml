@@ -74,17 +74,32 @@
     filename: typora
     update_cache: yes
 
+- name: Add an Apt signing key for Skype
+  apt_key:
+    url: https://repo.skype.com/data/SKYPE-GPG-KEY
+    state: present
+
+- name: enable skype repo
+  apt_repository:
+    repo: deb [arch=amd64] https://repo.skype.com/deb stable main
+    state: present
+    filename: skype-stable.list
+    update_cache: yes
+
 #------------------------------------
 # Post installation suggested
 - name: Install Codec, ms fonts, ..
   apt: name=ubuntu-restricted-extras state=latest
 
 - name: video packages
-  apt: name={{item}} state=latest
-  with_items:
-    - libdvd-pkg   
-    - libdvdread4
-    - python3
+  apt:
+    name:
+      - libdvd-pkg   
+      - libdvdread4
+      - python3
+    state: latest
+    autoclean: yes
+
 
 - name: reconfigure libdvd
   shell: "dpkg-reconfigure -f noninteractive libdvd-pkg"
@@ -120,76 +135,83 @@
 #------------------------------------
 # Install packages from repo
 - name: Install packages
-  apt: name={{item}} state=latest
-  with_items:
-    - cryptsetup
-    - keepassx
-    - tmux
-    - htop
-    - gnome-tweak-tool
-    - torbrowser-launcher
-    - numix-gtk-theme
-    - numix-icon-theme-circle
-    - nautilus-dropbox
-    - nextcloud-client
-    - nextcloud-client-nautilus
-    - shutter
-    - pdfshuffler
-    - slack
-    - kazam
-    - retext
-    - telegram-desktop
-    - banshee
-    - gimp
-    - meld
-    - nautilus-compare
-    - vlc
-    - remmina
-    - gnome-shell-extensions
-    - filezilla
-    - google-chrome-stable
-    - chrome-gnome-shell
-    - imagemagick
-    - nautilus-image-converter
-    - gdebi
-    - net-tools
-    - pgadmin3
-    - gnome-encfs-manager
-    - build-essential
-    - dkms
-    - unzip
-    - wget
-    - virtualbox-5.2
-    - pandoc
-    - texlive-latex-recommended
-    - texlive-xetex
-    - texlive-luatex
-    - pandoc-citeproc
-    - texlive-latex-extra
-    - context
-    - fonts-symbola
-    - gufw
-    - typora
-    - smbclient
-    - network-manager-openvpn
-    - network-manager-openvpn-gnome
-    - network-manager-vpnc-gnome
-    - network-manager-openconnect-gnome
-    - xul-ext-lightning
-    - printer-driver-cups-pdf
-    - gawk
-    - translate-shell
+  apt:
+    name:
+      - cryptsetup
+      - keepassx
+      - tmux
+      - htop
+      - gnome-tweak-tool
+      - torbrowser-launcher
+      - numix-gtk-theme
+      - numix-icon-theme-circle
+      - nautilus-dropbox
+      - nextcloud-client
+      - nextcloud-client-nautilus
+      - shutter
+      - pdfshuffler
+      - slack
+      - kazam
+      - retext
+      - telegram-desktop
+      - banshee
+      - gimp
+      - meld
+      - nautilus-compare
+      - vlc
+      - remmina
+      - gnome-shell-extensions
+      - filezilla
+      - google-chrome-stable
+      - chrome-gnome-shell
+      - imagemagick
+      - nautilus-image-converter
+      - gdebi
+      - net-tools
+      - pgadmin3
+      - gnome-encfs-manager
+      - build-essential
+      - dkms
+      - unzip
+      - wget
+      - virtualbox-5.2
+      - pandoc
+      - texlive-latex-recommended
+      - texlive-xetex
+      - texlive-luatex
+      - pandoc-citeproc
+      - texlive-latex-extra
+      - context
+      - fonts-symbola
+      - gufw
+      - typora
+      - smbclient
+      - network-manager-openvpn
+      - network-manager-openvpn-gnome
+      - network-manager-vpnc-gnome
+      - network-manager-openconnect-gnome
+      - xul-ext-lightning
+      - printer-driver-cups-pdf
+      - gawk
+      - translate-shell
+      - skypeforlinux
+    state: latest
+    autoclean: yes
+
 
 - name: Install to manage Exchange Calendar in Gnome Calendar
   apt: name=evolution-ews state=latest
 
 # Install packages for power management (save battery)
 - name: packages for save battery (power management)
-  apt: name={{item}} state=latest
-  with_items:
-    - tlp
-    - tlp-rdw
-    - powertop
+  apt:
+    name:
+      - tlp
+      - tlp-rdw
+      - powertop
+    state: latest
+    autoclean: yes
+
 
 
 #-------------------------------
