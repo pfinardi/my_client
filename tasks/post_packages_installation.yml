@@ -30,6 +30,19 @@
 
 
 #-------------------------------------------
+# VPN Configurations
+
+# BarracudaVPN
+- name: BarracudaVPN
+  shell: rsync -avz --ignore-errors /media/{{main_user}}/LupinCrypt/Backup/{{hostname}}/etc/barracudavpn/ /etc/barracudavpn/
+  ignore_errors: true
+
+# Network Manager
+- name: Network Manager                        
+  shell: rsync -avz --ignore-errors /media/{{main_user}}/LupinCrypt/Backup/{{hostname}}/etc/NetworkManager/ /etc/NetworkManager/
+  ignore_errors: true
+
+#-------------------------------------------
 # Other settings
 
 - name: Add Telegram to auto-start applications
@@ -65,9 +78,18 @@
   shell: rsync -avz --ignore-errors {{rsync_backup_path}}/Templates/ /home/{{main_user}}/Templates/
   ignore_errors: true
 
-# sync google chrome config
-- name: sync google chrome config
+# sync Pictures
+- name: sync Pictures
   become_user: "{{ main_user }}"
-  shell: rsync -avz --ignore-errors {{rsync_backup_path}}/.config/google-chrome/ /home/{{main_user}}/.config/google-chrome/
+  shell: rsync -avz --ignore-errors {{rsync_backup_path}}/Pictures/ /home/{{main_user}}/Pictures/
   ignore_errors: true
+
+# sync shell scripts
+- name: sync shell scripts
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors {{rsync_backup_path}}/*.sh /home/{{main_user}}/
+  ignore_errors: true
+
+
+
 

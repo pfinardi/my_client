@@ -21,9 +21,9 @@
     rsync_backup_path: '{{myDict[source_type | default("this key does not exist in the dict")] | default("") }}'
 
   tasks:
-#    - include: tasks/basic_settings.yml
-#    - include: tasks/packages.yml
-#    - include: tasks/git-repo.yml
-#    - include: tasks/cron.yml
-#    - include: tasks/post_packages_installation.yml
-    - include: tasks/test.yml
+    - include: tasks/basic_settings.yml
+    - include: tasks/packages.yml
+    - include: tasks/git-repo.yml
+    - include: tasks/cron.yml
+    - include: tasks/post_packages_installation.yml
+#    - include: tasks/test.yml
