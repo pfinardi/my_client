@@ -65,3 +65,9 @@
   shell: rsync -avz --ignore-errors {{rsync_backup_path}}/Templates/ /home/{{main_user}}/Templates/
   ignore_errors: true
 
+# sync google chrome config
+- name: sync google chrome config
+  become_user: "{{ main_user }}"
+  shell: rsync -avz --ignore-errors {{rsync_backup_path}}/.config/google-chrome/ /home/{{main_user}}/.config/google-chrome/
+  ignore_errors: true
+
