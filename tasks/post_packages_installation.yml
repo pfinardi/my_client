@@ -90,6 +90,10 @@
   shell: rsync -avz --ignore-errors {{rsync_backup_path}}/*.sh /home/{{main_user}}/
   ignore_errors: true
 
-
+# change path of .desktop files
+- name change path of .desktop files
+  become_user: "{{ main_user }}"
+  shell: sed -i 's/\/home\/paolo/\/home\/{{main_user}}/g' *.desktop
+  ignore_errors: true
 
 
