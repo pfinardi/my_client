@@ -72,6 +72,14 @@
     hour="*/2"
     job="rsync -avz --ignore-errors --delete-excluded --delete --stats --exclude-from=/home/{{main_user}}/backup_exclude_rsync.txt  /home/{{main_user}} {{nas_user}}@{{nas_ip}}:/volume1/NetBackup/{{hostname}}/ > /home/{{main_user}}/ZBck_NAS_home.log 2>/home/{{main_user}}/ZBck_NAS_home_errors.log"
 
+- name: Backup Music on NAS
+  cron:
+    name="Backup Musica on NAS"
+    user="{{main_user}}"
+    minute="30"
+    hour="*/2"
+    job="rsync -avz --ignore-errors --stats /media/{{main_user}}/LupinCrypt/Musica/ {{nas_user}}@{{nas_ip}}:/volume1/Musica/ > /home/{{main_user}}/ZBck_NAS_Musica.log 2>/home/{{main_user}}/ZBck_NAS_Musica_errors.log"
+
 #----------------------------
 # crontab di root
 
