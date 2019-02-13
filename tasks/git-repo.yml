@@ -13,11 +13,11 @@
 - name: Clone repo kettle pil
   become_user: "{{ main_user }}"
   git:
-    repo: git clone git@bitbucket.org:pfinardi/repo_kettle.git
+    repo: git@bitbucket.org:pfinardi/repo_kettle.git
     dest: /home/{{ main_user }}/git-repo/repo_kettle/
     version: master
     accept_hostkey: yes
-    key_file: /home/{{ main_user }}/.ssh/id_rsa
+    key_file: /home/{{ main_user }}/.ssh/pfinardi
 
 - name: Clone repo statistiche
   become_user: "{{ main_user }}"
@@ -26,7 +26,7 @@
     dest: /home/{{ main_user }}/git-repo/esc_portale_pil/
     version: master
     accept_hostkey: yes
-    key_file: /home/{{ main_user }}/.ssh/id_rsa
+    key_file: /home/{{ main_user }}/.ssh/pfinardi
 
 - name: Statistiche - application.ini
   become_user: "{{ main_user }}"

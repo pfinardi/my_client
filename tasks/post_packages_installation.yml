@@ -34,24 +34,26 @@
 
 # BarracudaVPN
 - name: BarracudaVPN
-  shell: rsync -avz --ignore-errors /media/{{main_user}}/LupinCrypt/Backup/{{hostname}}/etc/barracudavpn/ /etc/barracudavpn/
+  shell: rsync -avz --ignore-errors {{rsync_backup_path_etc}}/barracudavpn/ /etc/barracudavpn/
+#  shell: rsync -avz --ignore-errors /media/{{main_user}}/LupinCrypt/Backup/{{hostname}}/etc/barracudavpn/ /etc/barracudavpn/
   ignore_errors: true
 
 # Network Manager
 - name: Network Manager                        
-  shell: rsync -avz --ignore-errors /media/{{main_user}}/LupinCrypt/Backup/{{hostname}}/etc/NetworkManager/ /etc/NetworkManager/
+  shell: rsync -avz --ignore-errors {{rsync_backup_path_etc}}/NetworkManager/ /etc/NetworkManager/
+#  shell: rsync -avz --ignore-errors /media/{{main_user}}/LupinCrypt/Backup/{{hostname}}/etc/NetworkManager/ /etc/NetworkManager/
   ignore_errors: true
 
 #-------------------------------------------
 # Other settings
 
-- name: Add Telegram to auto-start applications
-  copy:
-    src: /usr/share/applications/telegramdesktop.desktop
-    dest: /home/{{main_user}}/.config/autostart/telegramdesktop.desktop
-    owner: "{{main_user}}"
-    group: "{{main_user}}"
-    mode: 0664
+#- name: Add Telegram to auto-start applications
+#  copy:
+#    src: /usr/share/applications/telegramdesktop.desktop
+#    dest: /home/{{main_user}}/.config/autostart/telegramdesktop.desktop
+#    owner: "{{main_user}}"
+#    group: "{{main_user}}"
+#    mode: 0664
 
 - name: change samba config to discover samba hosts netbios
   lineinfile:
@@ -90,10 +92,9 @@
   shell: rsync -avz --ignore-errors {{rsync_backup_path}}/*.sh /home/{{main_user}}/
   ignore_errors: true
 
-# change path of .desktop files
-- name change path of .desktop files
+# add autostart applications
+- name: add autostart applications
   become_user: "{{ main_user }}"
-  shell: sed -i 's/\/home\/paolo/\/home\/{{main_user}}/g' *.desktop
+  shell: rsync -avz --ignore-errors {{rsync_backup_path}}/.config/autostart /home/{{main_user}}/.config/
   ignore_errors: true
-
 
