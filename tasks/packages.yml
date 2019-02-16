@@ -56,9 +56,9 @@
 
 - name: enable Oracle VirtualBox repo
   apt_repository:
-    repo: deb http://download.virtualbox.org/virtualbox/debian bionic contrib
+    repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian bionic contrib
     state: present
-    filename: pgdg
+    filename: virtualbox
     update_cache: yes
 
 - name: Add an Apt signing key for Typora (markdown editor)
