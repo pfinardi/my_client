@@ -174,7 +174,8 @@
       - dkms
       - unzip
       - wget
-      - virtualbox-5.2
+      - virtualbox
+      - virtualbox-guest-additions-iso
       - pandoc
       - texlive-latex-recommended
       - texlive-xetex
