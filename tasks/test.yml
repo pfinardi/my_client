@@ -1,0 +1,12 @@
+- name: comment eventually "client max protocol = NT1" setting in smb.conf
+  replace:
+    path: /etc/samba/smb.conf
+    regexp: '(.*client max protocol.*)'
+    replace: '#\1'
+
+- name: change samba config to discover samba hosts netbios (AS400 shared folders)
+  lineinfile:
+    path: /etc/samba/smb.conf
+    insertafter: 'workgroup = WORKGROUP'
+    line: '   client max protocol = SMB2'
+    
