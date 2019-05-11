@@ -111,26 +111,26 @@
 #-----------------------------------
 # Java
 
-- name: add repo for Oracle Java
-  apt_repository:
-    repo: ppa:webupd8team/java
-    filename: java_oracle
+#- name: add repo for Oracle Java
+#  apt_repository:
+#    repo: ppa:webupd8team/java
+#    filename: java_oracle
 
-- name: Check if Oracle Java is installed
-  command: dpkg -s oracle-java8-set-default
-  register: java_install
-  ignore_errors: yes
+#- name: Check if Oracle Java is installed
+#  command: dpkg -s oracle-java8-set-default
+#  register: java_install
+#  ignore_errors: yes
 
-- name: set Oracle Java licence selected
-  shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-  when: java_install.rc > 0
+#- name: set Oracle Java licence selected
+#  shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+#  when: java_install.rc > 0
 
-- name: set Oracle Java licence seen
-  shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
-  when: java_install.rc > 0
+#- name: set Oracle Java licence seen
+#  shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
+#  when: java_install.rc > 0
 
-- name: Oracle Java
-  apt: name=oracle-java8-set-default state=latest force=yes
+#- name: Oracle Java
+#  apt: name=oracle-java8-set-default state=latest force=yes
 
 #------------------------------------
 # Install packages from repo
@@ -196,6 +196,7 @@
       - gawk
       - translate-shell
       - skypeforlinux
+      - dialog
     state: latest
     autoclean: yes
 
@@ -274,10 +275,10 @@
 #  when: cloud_sapapp != 'no'
 
 # IBM iAccess
-- name: Install IBMiAccess from backup
-  become_user: "{{ main_user }}"
-  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/IBMiAccess_v1r1 /home/{{main_user}}/
-  ignore_errors: true
+#- name: Install IBMiAccess from backup
+#  become_user: "{{ main_user }}"
+#  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/IBMiAccess_v1r1 /home/{{main_user}}/
+#  ignore_errors: true
 
 - name: ...and config IBMiAccess
   become_user: "{{ main_user }}"
