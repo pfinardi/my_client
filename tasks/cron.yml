@@ -64,6 +64,14 @@
     hour="*/2"
     job="rsync -avz --delete-excluded --delete --ignore-errors --exclude-from=backup_exclude_rsync.txt --stats /home/{{main_user}} /media/{{main_user}}/LupinCrypt/Backup/{{hostname}}/ > ZBck_HD_HOME_{{hostname}}_{{main_user}}.log 2>/dev/null"
 
+- name: Backup home on external HD 2
+  cron:
+    name="Backup home on external HD"
+    user="{{main_user}}"
+    minute="30"
+    hour="*/2"
+    job="rsync -avz --delete-excluded --delete --ignore-errors --exclude-from=backup_exclude_rsync.txt --stats /home/{{main_user}} /media/{{main_user}}/zaza_Crypt/Backup/{{hostname}}/ > ZBck_HD_HOME_{{hostname}$
+
 - name: Backup home on NAS
   cron:
     name="Backup home on NAS"
