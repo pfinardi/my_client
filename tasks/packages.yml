@@ -138,7 +138,7 @@
   apt:
     name:
       - cryptsetup
-      - keepassx
+      - keepassxc
       - tmux
       - htop
       - gnome-tweak-tool
