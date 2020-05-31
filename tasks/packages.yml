@@ -1,9 +1,16 @@
 #--------------------------------------------
 # enabling or adding the needed repositories
-- name: enable partner repo
+- name: enable partner repo (Ubuntu Bionic Beaver)
   apt_repository:
     repo: deb http://archive.canonical.com/ubuntu bionic partner
     state: present
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+
+- name: enable partner repo (Ubuntu Focal Fossa)
+  apt_repository:
+    repo: deb http://archive.canonical.com/ubuntu focal partner
+    state: present
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'focal'
 
 - name: add repo numix theme
   apt_repository:
@@ -42,9 +49,9 @@
     url: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
     state: present
 
-- name: enable postgresql repo (for pgadmin, too)
+- name: enable postgresql repo (for pgadmin, too) 
   apt_repository:
-    repo: deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main
+    repo: deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main
     state: present
     filename: pgdg
     update_cache: yes
@@ -56,7 +63,8 @@
 
 - name: enable Oracle VirtualBox repo
   apt_repository:
-    repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian bionic contrib
+#    repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian bionic contrib
+    repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib
     state: present
     filename: virtualbox
     update_cache: yes
