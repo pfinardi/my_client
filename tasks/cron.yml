@@ -86,7 +86,7 @@
     user="{{main_user}}"
     minute="30"
     hour="*/2"
-    job="rsync -avz --ignore-errors --stats /media/{{main_user}}/LupinCrypt/Musica/ {{nas_user}}@{{nas_ip}}:/volume1/Musica/ > /home/{{main_user}}/ZBck_NAS_Musica.log 2>/home/{{main_user}}/ZBck_NAS_Musica_errors.log"
+    job="rsync -avz --ignore-errors --delete-excluded --delete --stats /media/{{main_user}}/LupinCrypt/Musica/ {{nas_user}}@{{nas_ip}}:/volume1/Musica/ > /home/{{main_user}}/ZBck_NAS_Musica.log 2>/home/{{main_user}}/ZBck_NAS_Musica_errors.log"
 
 #----------------------------
 # crontab di root
