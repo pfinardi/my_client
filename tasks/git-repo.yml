@@ -19,17 +19,17 @@
     accept_hostkey: yes
     key_file: /home/{{ main_user }}/.ssh/pfinardi
 
-- name: Clone repo statistiche
-  become_user: "{{ main_user }}"
-  git:
-    repo: git@bitbucket.org:pfinardi/esc_portale_pil.git
-    dest: /home/{{ main_user }}/git-repo/esc_portale_pil/
-    version: master
-    accept_hostkey: yes
-    key_file: /home/{{ main_user }}/.ssh/pfinardi
+#- name: Clone repo statistiche
+#  become_user: "{{ main_user }}"
+#  git:
+#    repo: git@bitbucket.org:pfinardi/esc_portale_pil.git
+#    dest: /home/{{ main_user }}/git-repo/esc_portale_pil/
+#    version: master
+#    accept_hostkey: yes
+#    key_file: /home/{{ main_user }}/.ssh/pfinardi
 
-- name: Statistiche - application.ini
-  become_user: "{{ main_user }}"
-  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/ESC/PHPStorm/esc_portale_pil/application/configs/application.ini /home/{{main_user}}/git-repo/esc_portale_pil/application/configs/
-  ignore_errors: true
+#- name: Statistiche - application.ini
+#  become_user: "{{ main_user }}"
+#  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/ESC/PHPStorm/esc_portale_pil/application/configs/application.ini /home/{{main_user}}/git-repo/esc_portale_pil/application/configs/
+#  ignore_errors: true
 

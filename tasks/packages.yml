@@ -1,36 +1,36 @@
 #--------------------------------------------
 # enabling or adding the needed repositories
-- name: enable partner repo (Ubuntu Bionic Beaver)
-  apt_repository:
-    repo: deb http://archive.canonical.com/ubuntu bionic partner
-    state: present
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
+#- name: enable partner repo (Ubuntu Bionic Beaver)
+#  apt_repository:
+#    repo: deb http://archive.canonical.com/ubuntu bionic partner
+#    state: present
+#    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
 
 - name: enable partner repo (Ubuntu Focal Fossa)
   apt_repository:
     repo: deb http://archive.canonical.com/ubuntu focal partner
     state: present
-    when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'focal'
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'focal'
 
-- name: add repo numix theme
-  apt_repository:
-    repo: ppa:numix/ppa
-    filename: numix
+#- name: add repo numix theme
+#  apt_repository:
+#    repo: ppa:numix/ppa
+#    filename: numix
 
-- name: add repo community theme
-  apt_repository:
-    repo: ppa:communitheme/ppa
-    filename: communitheme
+#- name: add repo community theme
+#  apt_repository:
+#    repo: ppa:communitheme/ppa
+#    filename: communitheme
 
 - name: add repo for nextcloud-client
   apt_repository:
     repo: ppa:nextcloud-devs/client
     filename: nextcloud
 
-- name: add repo for Gnome Encfs Manager
-  apt_repository:
-    repo: ppa:gencfsm/ppa
-    filename: gencfsm
+#- name: add repo for Gnome Encfs Manager
+#  apt_repository:
+#    repo: ppa:gencfsm/ppa
+#    filename: gencfsm
 
 - name: Add an Apt signing key for Google Chrome
   apt_key:
@@ -44,30 +44,35 @@
     filename: google-chrome
     update_cache: yes
 
-- name: Import repo key for Postgresql
-  apt_key:
-    url: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
-    state: present
+#- name: Import repo key for Postgresql
+#  apt_key:
+#    url: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
+#    state: present
 
-- name: enable postgresql repo (for pgadmin, too) 
-  apt_repository:
-    repo: deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main
-    state: present
-    filename: pgdg
-    update_cache: yes
+#- name: enable postgresql repo (for pgadmin, too) 
+#  apt_repository:
+#    repo: deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -sc)-pgdg main
+#    state: present
+#    filename: pgdg
+#    update_cache: yes
 
-- name: Add an Apt signing key for Oracle VirtualBox
-  apt_key:
-    url: https://www.virtualbox.org/download/oracle_vbox_2016.asc -O-
-    state: present
+#- name: Add an Apt signing key for Oracle VirtualBox
+#  apt_key:
+#    url: https://www.virtualbox.org/download/oracle_vbox.asc -O-
+#    state: present
 
-- name: enable Oracle VirtualBox repo
-  apt_repository:
+#- name: Add an Apt signing key for Oracle VirtualBox
+#  apt_key:
+#    url: https://www.virtualbox.org/download/oracle_vbox_2016.asc -O-
+#    state: present
+
+#- name: enable Oracle VirtualBox repo
+#  apt_repository:
 #    repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian bionic contrib
-    repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib
-    state: present
-    filename: virtualbox
-    update_cache: yes
+#    repo: deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib
+#    state: present
+#    filename: virtualbox
+#    update_cache: yes
 
 - name: Add an Apt signing key for Typora (markdown editor)
   apt_key:
@@ -103,7 +108,7 @@
   apt:
     name:
       - libdvd-pkg   
-      - libdvdread4
+      - libdvdread7
       - python3
     state: latest
     autoclean: yes
@@ -113,8 +118,16 @@
   shell: "dpkg-reconfigure -f noninteractive libdvd-pkg"
   ignore_errors: yes
 
-- name: Install Community Theme
-  apt: name=ubuntu-communitheme-session state=latest
+
+- name: add repo for Shutter
+  apt_repository:
+    repo: ppa:linuxuprising/shutter
+    filename: shutter
+
+
+#- name: Install Community Theme
+#  apt: name=ubuntu-communitheme-session state=latest
+
 
 #-----------------------------------
 # Java
@@ -151,8 +164,8 @@
       - htop
       - gnome-tweak-tool
       - torbrowser-launcher
-      - numix-gtk-theme
-      - numix-icon-theme-circle
+#      - numix-gtk-theme
+#      - numix-icon-theme-circle
       - nautilus-dropbox
       - nextcloud-client
       - nextcloud-client-nautilus
@@ -160,12 +173,12 @@
       - pdfshuffler
       - slack
       - vokoscreen
-      - retext
+#      - retext
       - telegram-desktop
-      - banshee
+#      - banshee
       - gimp
       - meld
-      - nautilus-compare
+#      - nautilus-compare
       - vlc
       - remmina
       - gnome-shell-extensions
@@ -176,8 +189,8 @@
       - nautilus-image-converter
       - gdebi
       - net-tools
-      - pgadmin3
-      - gnome-encfs-manager
+#      - pgadmin3
+#      - gnome-encfs-manager
       - build-essential
       - dkms
       - unzip
@@ -205,22 +218,25 @@
       - translate-shell
       - skypeforlinux
       - dialog
+#      - chromium-browser
+# serve a shutter per l'icona in system tray
+      - gir1.2-appindicator3-0.1
     state: latest
     autoclean: yes
 
 
-- name: Install to manage Exchange Calendar in Gnome Calendar
-  apt: name=evolution-ews state=latest
+#- name: Install to manage Exchange Calendar in Gnome Calendar
+#  apt: name=evolution-ews state=latest
 
 # Install packages for power management (save battery)
-- name: packages for save battery (power management)
-  apt:
-    name:
-      - tlp
-      - tlp-rdw
-      - powertop
-    state: latest
-    autoclean: yes
+#- name: packages for save battery (power management)
+#  apt:
+#    name:
+#      - tlp
+#      - tlp-rdw
+#      - powertop
+#    state: latest
+#    autoclean: yes
 
 
 
@@ -233,7 +249,8 @@
   command: snap install spotify
 
 - name: install Mattermost
-  command: snap install mattermost-desktop --beta
+#  command: snap install mattermost-desktop --beta
+  command: snap install mattermost-desktop
 
 #-------------------------------
 # Package to download and install
@@ -299,18 +316,18 @@
   ignore_errors: true
 
 # Pentaho Data Integration (kettle)
-- name: Install Pentaho Data Integration (kettle) from backup
-  become_user: "{{ main_user }}"
-  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/kettle /home/{{main_user}}/
-  ignore_errors: true
+#- name: Install Pentaho Data Integration (kettle) from backup
+#  become_user: "{{ main_user }}"
+#  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/kettle /home/{{main_user}}/
+#  ignore_errors: true
 
-- name: kettle Properties from backup
-  become_user: "{{ main_user }}"
-  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.kettle /home/{{main_user}}/
-  ignore_errors: true
+#- name: kettle Properties from backup
+#  become_user: "{{ main_user }}"
+#  shell: rsync -avz --ignore-errors --delete-excluded --delete {{rsync_backup_path}}/.kettle /home/{{main_user}}/
+#  ignore_errors: true
 
-- name: Install libwebkitgtk-1.0-0 (necessary for PDI)
-  apt: name=libwebkitgtk-1.0-0 state=latest
+#- name: Install libwebkitgtk-1.0-0 (necessary for PDI)
+#  apt: name=libwebkitgtk-1.0-0 state=latest
 
 
 
@@ -388,11 +405,11 @@
 - name: remove Gnome Amazon launcher
   apt: name=ubuntu-web-launchers state=absent
 
-- name: remove Deja-Dup
-  apt: name=deja-dup state=absent
+#- name: remove Deja-Dup
+#  apt: name=deja-dup state=absent
 
-- name: Rhythmbox
-  apt: name=rhythmbox state=absent
+#- name: Rhythmbox
+#  apt: name=rhythmbox state=absent
 
 #--------------------------------
 # Oracle VirualBox
@@ -402,56 +419,56 @@
 #-------------------------------------------
 # ...and finally
 # Shutter problems: "Edit" are not enabled
-- name: Check if libgoocanvas-common is installed
-  command: dpkg -s libgoocanvas-common
-  register: pk_check1
-  ignore_errors: yes
+#- name: Check if libgoocanvas-common is installed
+#  command: dpkg -s libgoocanvas-common
+#  register: pk_check1
+#  ignore_errors: yes
 
-- name: shutter problems - download 1
-  become_user: "{{ main_user }}"
-  get_url:
-    url: https://launchpad.net/ubuntu/+archive/primary/+files/libgoocanvas-common_1.0.0-1_all.deb
-    dest: /home/{{main_user}}/Downloads/
-  when: pk_check1.rc > 0
+#- name: shutter problems - download 1
+#  become_user: "{{ main_user }}"
+#  get_url:
+#    url: https://launchpad.net/ubuntu/+archive/primary/+files/libgoocanvas-common_1.0.0-1_all.deb
+#    dest: /home/{{main_user}}/Downloads/
+#  when: pk_check1.rc > 0
 
-- name: Check if libgoocanvas3:amd64 is installed
-  command: dpkg -s libgoocanvas3:amd64
-  register: pk_check2
-  ignore_errors: yes
+#- name: Check if libgoocanvas3:amd64 is installed
+#  command: dpkg -s libgoocanvas3:amd64
+#  register: pk_check2
+#  ignore_errors: yes
 
-- name: shutter problems - download 2
-  become_user: "{{ main_user }}"
-  get_url:
-    url: https://launchpad.net/ubuntu/+archive/primary/+files/libgoocanvas3_1.0.0-1_amd64.deb
-    dest: /home/{{main_user}}/Downloads/
-  when: pk_check2.rc > 0
+#- name: shutter problems - download 2
+#  become_user: "{{ main_user }}"
+#  get_url:
+#    url: https://launchpad.net/ubuntu/+archive/primary/+files/libgoocanvas3_1.0.0-1_amd64.deb
+#    dest: /home/{{main_user}}/Downloads/
+#  when: pk_check2.rc > 0
 
-- name: Check if libgoo-canvas-perl is installed
-  command: dpkg -s libgoo-canvas-perl
-  register: pk_check3
-  ignore_errors: yes
+#- name: Check if libgoo-canvas-perl is installed
+#  command: dpkg -s libgoo-canvas-perl
+#  register: pk_check3
+#  ignore_errors: yes
 
-- name: shutter problems - download 3
-  become_user: "{{ main_user }}"
-  get_url:
-    url: https://launchpad.net/ubuntu/+archive/primary/+files/libgoo-canvas-perl_0.06-2ubuntu3_amd64.deb
-    dest: /home/{{main_user}}/Downloads/
-  when: pk_check3.rc > 0
+#- name: shutter problems - download 3
+#  become_user: "{{ main_user }}"
+#  get_url:
+#    url: https://launchpad.net/ubuntu/+archive/primary/+files/libgoo-canvas-perl_0.06-2ubuntu3_amd64.deb
+#    dest: /home/{{main_user}}/Downloads/
+#  when: pk_check3.rc > 0
 
-- name: shutter problems - install package 1
-  command: gdebi -n /home/{{main_user}}/Downloads/libgoocanvas-common_1.0.0-1_all.deb
-  when: pk_check1.rc > 0
+#- name: shutter problems - install package 1
+#  command: gdebi -n /home/{{main_user}}/Downloads/libgoocanvas-common_1.0.0-1_all.deb
+#  when: pk_check1.rc > 0
 
-- name: shutter problems - install package 2
-  command: gdebi -n /home/{{main_user}}/Downloads/libgoocanvas3_1.0.0-1_amd64.deb
-  when: pk_check2.rc > 0
+#- name: shutter problems - install package 2
+#  command: gdebi -n /home/{{main_user}}/Downloads/libgoocanvas3_1.0.0-1_amd64.deb
+#  when: pk_check2.rc > 0
 
-- name: shutter problems - install package 3
-  command: gdebi -n /home/{{main_user}}/Downloads/libgoo-canvas-perl_0.06-2ubuntu3_amd64.deb
-  when: pk_check3.rc > 0
+#- name: shutter problems - install package 3
+#  command: gdebi -n /home/{{main_user}}/Downloads/libgoo-canvas-perl_0.06-2ubuntu3_amd64.deb
+#  when: pk_check3.rc > 0
 
-- name: Install package necessary for some App indicator in tray bar
-  apt: name=libappindicator-dev state=latest
+#- name: Install package necessary for some App indicator in tray bar
+#  apt: name=libappindicator-dev state=latest
 
 #- name: ...then install Gtk2::AppIndicator perl extension for libappindicator for Shutter (otherwise it doeasn't appear in tray bar)
 #  command: cpan -i Gtk2::AppIndicator
